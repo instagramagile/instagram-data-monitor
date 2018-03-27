@@ -6,7 +6,7 @@ import requests
 import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 
 class InstagramUser:
 
@@ -23,7 +23,7 @@ class InstagramUser:
 
 		chrome_options = Options()  
 		chrome_options.add_argument("--headless")
-		chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+		chrome_options.binary_location = '/usr/bin/google-chrome'
 
 		driver = webdriver.Chrome(executable_path=os.path.abspath("drivers/macos/chromedriver"), chrome_options=chrome_options)
 		driver.get(authorize_login_url)
