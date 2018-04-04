@@ -17,9 +17,9 @@ class InstagramUser:
 		insta_user='instagramagile@gmail.com'
 		insta_password='instagramagile12018'
 		client_id='d92560af65cd4a86ba1a3b54bf6a4b57'
-		redirect_uri='https://github.com/Douglasbraga94/instagram-data-monitor/blob/master/.gitignore'
+		redirect_uri='https://github.com/unb-cic-esw/instagram-data-monitor/'
 
-		authorize_login_url = 'https://api.instagram.com/oauth/authorize/?client_id=%s&redirect_uri=%s&response_type=token&scope=basic+public_content'	% (client_id, redirect_uri)
+		authorize_login_url = 'https://api.instagram.com/oauth/authorize/?client_id=%s&redirect_uri=%s&response_type=token' % (client_id, redirect_uri)
 
 		options = Options()  
 		options.add_argument("--headless")
@@ -37,6 +37,7 @@ class InstagramUser:
 		login_btn.click()
 		current_url = driver.current_url
 
+		print(current_url + '\n\n')
 		access_token = re.match('.*#access_token=(.*)',current_url).group(1)
 
 		logging.debug('access_token retrieved: %s' % access_token)
@@ -45,7 +46,7 @@ class InstagramUser:
 		logging.debug('Retrieving %s\'s user id' % username)
 		response = requests.get('https://www.instagram.com/%s/?__a=1' % username)
 		user = response.json()
-		user_id = user['user']['id']
+		user_id = user['graphql']['user']['id']
 		logging.debug('%s\'s id is %s' % (username,user_id))
 
 		# Buscar o que interessa.
