@@ -17,10 +17,12 @@ class InstagramUser:
 		insta_user='instagramagile@gmail.com'
 		insta_password='instagramagile12018'
 		client_id='328c70d43d374d15b3d4887fcf51514c'
-		redirect_uri='https://github.com/Douglasbraga94/instagram-data-monitor'
+		redirect_uri='https://github.com/unb-cic-esw/instagram-data-monitor/'
 
 		authorize_login_url = 'https://api.instagram.com/oauth/authorize/?client_id=%s&redirect_uri=%s&response_type=token&scope=basic+public_content'	% (client_id, redirect_uri)
-
+		print('\n')
+		print("URL de autorizacao::")
+		print(authorize_login_url)
 		options = Options()  
 		options.add_argument("--headless")
 		options.binary_location = '/usr/bin/google-chrome'
