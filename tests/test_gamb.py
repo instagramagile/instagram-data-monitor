@@ -1,6 +1,6 @@
 import unittest
 import os
-from gambs.valor1 import ator_from_url
+from gambs.valor1.valor1 import ator_from_url
 
 class TesteAtor(unittest.TestCase):
 	def teste_nome(self):
