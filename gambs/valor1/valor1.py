@@ -38,12 +38,12 @@ def main(debug=False):
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
   with open('atores_dados','w') as fp:
-    fp.write('Nome    Posts    Seg\n')
+    fp.write('Nome,Posts,Seg\n')
     for url in urls:
       ator = ator_from_url(url)
       if ator != False:
-        print(ator)
-        fp.write(str(ator)[1:][:-1]+'\n')
+        s = ator.nome+','+ator.post+','ator.seg+'\n'
+        fp.write(ator.nome+','+ator.post+','ator.seg+'\n')
   if(not debug): # Nao remover se quiser debugar :)
     os.system("rm *.html")  # Impedir que se use arquivo velho e apagar apohs o uso
 
