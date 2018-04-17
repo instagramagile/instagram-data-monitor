@@ -37,7 +37,6 @@ class InstagramUser:
 		login_btn.click()
 		current_url = driver.current_url
 
-		print(current_url + '\n\n')
 		access_token = re.match('.*#access_token=(.*)',current_url).group(1)
 
 		logging.debug('access_token retrieved: %s' % access_token)
