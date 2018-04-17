@@ -16,10 +16,13 @@ class InstagramUser:
 		
 		insta_user='instagramagile@gmail.com'
 		insta_password='instagramagile12018'
-		client_id='d92560af65cd4a86ba1a3b54bf6a4b57'
+		client_id='328c70d43d374d15b3d4887fcf51514c'
 		redirect_uri='https://github.com/unb-cic-esw/instagram-data-monitor/'
 
-		authorize_login_url = 'https://api.instagram.com/oauth/authorize/?client_id=%s&redirect_uri=%s&response_type=token' % (client_id, redirect_uri)
+		authorize_login_url = 'https://api.instagram.com/oauth/authorize/?client_id=%s&redirect_uri=%s&response_type=token&scope=basic+public_content'	% (client_id, redirect_uri)
+		print('\n')
+		print("URL de autorizacao::")
+		print(authorize_login_url)
 
 		options = Options()  
 		options.add_argument("--headless")
@@ -37,6 +40,8 @@ class InstagramUser:
 		login_btn.click()
 		current_url = driver.current_url
 
+		print(current_url + '\n\n')
+
 		access_token = re.match('.*#access_token=(.*)',current_url).group(1)
 
 		logging.debug('access_token retrieved: %s' % access_token)
@@ -45,9 +50,19 @@ class InstagramUser:
 		logging.debug('Retrieving %s\'s user id' % username)
 		response = requests.get('https://www.instagram.com/%s/?__a=1' % username)
 		user = response.json()
+		# print("json resposta::")
+		# print(user)
+		# print("\n\n")
+		# # user_id = user['user']['id']
+		# print('\n\ngraphql::')
+		# print(user['graphql'])
+		# print('\n\ngraphql user')
+		# print(user['graphql']['user'])
+		# print('\n\ngraphql user id')		
+		# print(user['graphql']['user']['id'])
 		user_id = user['graphql']['user']['id']
-		logging.debug('%s\'s id is %s' % (username,user_id))
 
+		logging.debug('%s\'s id is %s' % (username,user_id))
 		# Buscar o que interessa.
 		logging.debug('Retrieving %s\'s user data' % username)
 		response = requests.get('https://api.instagram.com/v1/users/%s/?access_token=%s' % (user_id,access_token))
