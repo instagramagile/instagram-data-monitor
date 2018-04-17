@@ -18,7 +18,7 @@ class Ator(object):
 # Funcao recebe uma url e retorna um objeto do tipo ator
 def ator_from_url(url):
   try:
-    ator = re.findall( r'\.com\/(.*)\/', url)[0]
+    ator = re.search( r'\.com\/(.*)\/', url).group(1)
   except:
     return False
   try:
