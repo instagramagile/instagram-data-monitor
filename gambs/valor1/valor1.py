@@ -1,16 +1,19 @@
 import re
 import wget
 import os
+import datetime
+now = datetime.datetime.now()
 class Ator(object):
   """docstring for Autor"""
-  def __init__(self, name, pos=-1, segu=-1):
+  def __init__(self, name, pos=-1, segu=-1, segnd=-1):
     self.nome = name
     self.post = pos
     self.seg = segu
+    self.segn = segnd
   def __repr__(self):
-    return (self.nome, self.post, self.seg)
+    return (self.nome, self.post, self.seg, self.segn)
   def  __str__(self):
-    return str((self.nome, self.post, self.seg))
+    return str((self.nome, self.post, self.seg, self.segn))
 
 
 # Ideia: ter uma hash pra mapear (nome_instagram => nome real)
@@ -18,7 +21,7 @@ class Ator(object):
 # Funcao recebe uma url e retorna um objeto do tipo ator
 def ator_from_url(url):
   try:
-    ator = re.search( r'\.com\/(.*)\/', url).group(1)
+    ator = re.findall( r'\.com\/(.*)\/', url)[0]
   except:
     return False
   try:
@@ -34,7 +37,8 @@ def ator_from_url(url):
     return False
   seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])
   posts = int(re.findall(r'"edge_owner_to_timeline_media":\{"count":(\d+)',html)[0])
-  return Ator(name=ator, pos=posts, segu=seguidores)
+  seguindo = int(re.findall(r'"edge_follow":\{"count":(\d+)',html)[0])
+  return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo)
 
 
 # Monta a lista de urls usada para extrair as informcoes
@@ -45,13 +49,13 @@ def main(debug=False):
   with open('atores_lista', 'r') as fp:
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
-  with open('atores_dados.csv','w') as fp:
-    fp.write('Nome,Posts,Seg\n')
+  with open('atores_dados '+now.strftime("%d-%m-%y-%H:%M") +'.csv','w') as fp:
+    fp.write('Nome,Postagens,Seguidores,Seguindo\n')
     for url in urls:
       ator = ator_from_url(url)
       if ator:
-        s = ator.nome + ',' + str(ator.post) + ',' + str(ator.seg)+'\n'
-        fp.write(ator.nome + ',' + str(ator.post) + ',' + str(ator.seg)+'\n')
+        s = ator.nome + ',' + str(ator.post) + ',' + str(ator.seg)+',' + str(ator.segn)+'\n'
+        fp.write(ator.nome + ',' + str(ator.post) + ',' + str(ator.seg)+ ','+str(ator.segn) +'\n')
         valid_urls.append(url)
   with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
     for url in valid_urls:
@@ -62,4 +66,4 @@ def main(debug=False):
 
 # Nao faz sentido: melhor deixar pra debug
 # os.system("rm *.html")  # Impedir que se use arquivo velho e apagar apohs o uso
-
+main()
