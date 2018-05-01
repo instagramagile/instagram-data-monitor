@@ -167,10 +167,7 @@ class InstagramScraper(object):
             except requests.exceptions.RequestException:
                 self.logger.warning('Failed to log out ' + self.login_user)
 
-    def make_dst_dir(self, username):
-        """Creates the destination directory."""
-        dst=username
-        return dst
+
 
     def get_last_scraped_filemtime(self, dst):
         """Stores the last modified time of newest file in a directory."""
@@ -189,13 +186,17 @@ class InstagramScraper(object):
     def scrape(self, executor=concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_DOWNLOADS)):
         """Crawls through and downloads user's media"""
         try:
+
+            arquivo = open('stories.csv', 'w')
+            arquivo.write('username'+','+'Data'+','+'stories'+'\n')
+            arquivo.close()
             for username in self.usernames:
                 self.posts = []
                 self.last_scraped_filemtime = 0
                 greatest_timestamp = 0
                 future_to_item = {}
 
-                dst = self.make_dst_dir(username)
+                dst = username
 
                 # Get the user metadata.
                 shared_data = self.get_shared_data(username)
