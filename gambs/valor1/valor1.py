@@ -39,7 +39,7 @@ def ator_from_url(url):
   seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])
   posts = int(re.findall(r'"edge_owner_to_timeline_media":\{"count":(\d+)',html)[0])
   seguindo = int(re.findall(r'"edge_follow":\{"count":(\d+)',html)[0])
-  nomereal = str(re.findall(r'"full_name":"(.+)",',html)[0])
+  nomereal = str(re.findall(r'"full_name":"(\w+)",',html)[0])
   return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
 
 
