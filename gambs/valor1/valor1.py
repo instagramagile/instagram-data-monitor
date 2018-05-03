@@ -39,7 +39,7 @@ def ator_from_url(url):
   seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])
   posts = int(re.findall(r'"edge_owner_to_timeline_media":\{"count":(\d+)',html)[0])
   seguindo = int(re.findall(r'"edge_follow":\{"count":(\d+)',html)[0])
-  nomereal = str(re.findall(r'"full_name":"(\w+)",',html)[0])
+  nomereal = str(re.findall(r'"full_name":"(.*?")',html)[0][:-1])
   return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
 
 
@@ -52,12 +52,12 @@ def main(debug=False):
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
   with open('atores_dados '+now.strftime("%d-%m-%y-%H:%M") +'.csv','w') as fp:
-    fp.write('Nome da conta,Nome real da conta,Postagens,Seguidores,Seguindo\n')
+    fp.write('Nome real da conta,Nome da conta,Seguidores,Seguindo,Postagens\n')
     for url in urls:
       ator = ator_from_url(url)
       if ator:
-        s = ator.nome +','+str(ator.real) +',' + str(ator.post) + ',' + str(ator.seg)+',' + str(ator.segn)+'\n'
-        fp.write(ator.nome + ',' +str(ator.real) +',' + str(ator.post) + ',' + str(ator.seg)+ ','+str(ator.segn) +'\n')
+        s = str(ator.real)  +','+ator.nome +',' + str(ator.seg)+',' + str(ator.segn)+ ',' + str(ator.post)+'\n'
+        fp.write(str(ator.real)  +','+ator.nome +',' + str(ator.seg)+ ','+str(ator.segn)+ ',' + str(ator.post)  +'\n')
         valid_urls.append(url)
   with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
     for url in valid_urls:
