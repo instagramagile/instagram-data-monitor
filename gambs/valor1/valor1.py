@@ -5,15 +5,16 @@ import datetime
 now = datetime.datetime.now()
 class Ator(object):
   """docstring for Autor"""
-  def __init__(self, name, pos=-1, segu=-1, segnd=-1):
+  def __init__(self, name,nr, pos=-1, segu=-1, segnd=-1):
     self.nome = name
     self.post = pos
     self.seg = segu
     self.segn = segnd
+    self.real= nr
   def __repr__(self):
-    return (self.nome, self.post, self.seg, self.segn)
+    return (self.nome, self.post, self.seg, self.segn, self.real)
   def  __str__(self):
-    return str((self.nome, self.post, self.seg, self.segn))
+    return str((self.nome, self.post, self.seg, self.segn, self.real))
 
 
 # Ideia: ter uma hash pra mapear (nome_instagram => nome real)
@@ -38,7 +39,8 @@ def ator_from_url(url):
   seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])
   posts = int(re.findall(r'"edge_owner_to_timeline_media":\{"count":(\d+)',html)[0])
   seguindo = int(re.findall(r'"edge_follow":\{"count":(\d+)',html)[0])
-  return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo)
+  nomereal = str(re.findall(r'"full_name":"(.*?")',html)[0][:-1])
+  return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
 
 
 # Monta a lista de urls usada para extrair as informcoes
@@ -50,12 +52,12 @@ def main(debug=False):
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
   with open('atores_dados '+now.strftime("%d-%m-%y-%H:%M") +'.csv','w') as fp:
-    fp.write('Nome,Postagens,Seguidores,Seguindo\n')
+    fp.write('Nome real da conta,Conta,Seguidores,Seguindo,Postagens\n')
     for url in urls:
       ator = ator_from_url(url)
       if ator:
-        s = ator.nome + ',' + str(ator.post) + ',' + str(ator.seg)+',' + str(ator.segn)+'\n'
-        fp.write(ator.nome + ',' + str(ator.post) + ',' + str(ator.seg)+ ','+str(ator.segn) +'\n')
+        s = str(ator.real)  +','+ator.nome +',' + str(ator.seg)+',' + str(ator.segn)+ ',' + str(ator.post)+'\n'
+        fp.write(str(ator.real)  +','+'https://www.instagram.com/'+ator.nome +',' + str(ator.seg)+ ','+str(ator.segn)+ ',' + str(ator.post)  +'\n')
         valid_urls.append(url)
   with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
     for url in valid_urls:
