@@ -52,12 +52,12 @@ def main(debug=False):
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
   with open('atores_dados '+now.strftime("%d-%m-%y-%H:%M") +'.csv','w') as fp:
-    fp.write('Nome real da conta,Nome da conta,Seguidores,Seguindo,Postagens\n')
+    fp.write('Nome real da conta,Conta,Seguidores,Seguindo,Postagens\n')
     for url in urls:
       ator = ator_from_url(url)
       if ator:
         s = str(ator.real)  +','+ator.nome +',' + str(ator.seg)+',' + str(ator.segn)+ ',' + str(ator.post)+'\n'
-        fp.write(str(ator.real)  +','+ator.nome +',' + str(ator.seg)+ ','+str(ator.segn)+ ',' + str(ator.post)  +'\n')
+        fp.write(str(ator.real)  +','+'https://www.instagram.com/'+ator.nome +',' + str(ator.seg)+ ','+str(ator.segn)+ ',' + str(ator.post)  +'\n')
         valid_urls.append(url)
   with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
     for url in valid_urls:
