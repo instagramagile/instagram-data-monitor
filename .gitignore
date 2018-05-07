@@ -109,3 +109,6 @@ ENV/
 # personal files
 instagram/instagram_personal.py
 tests_personal
+
+# termos de uso do instagram
+terms_instagram
