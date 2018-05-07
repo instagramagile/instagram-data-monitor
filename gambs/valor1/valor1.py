@@ -2,9 +2,14 @@ import re
 import wget
 import os
 import datetime
+import codecs
 now = datetime.datetime.now()
 class Ator(object):
   """docstring for Autor"""
+
+  def __repr__(self):
+    return str(self)
+
   def __init__(self, name,nr, pos=-1, segu=-1, segnd=-1):
     self.nome = name
     self.post = pos
@@ -39,33 +44,38 @@ def ator_from_url(url):
   seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])
   posts = int(re.findall(r'"edge_owner_to_timeline_media":\{"count":(\d+)',html)[0])
   seguindo = int(re.findall(r'"edge_follow":\{"count":(\d+)',html)[0])
-  nomereal = str(re.findall(r'"full_name":"(.*?")',html)[0][:-1])
+  nomereal = re.findall(r'"full_name":"(.*?")',html)[0][:-1]
   return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
 
 
 # Monta a lista de urls usada para extrair as informcoes
 def main(debug=False):
-  os.system("rm *.html")
+  try:
+    os.system("rm *.html")
+  except:
+    pass
   urls = []
   valid_urls = []
   with open('atores_lista', 'r') as fp:
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
-  with open('atores_dados '+now.strftime("%d-%m-%y-%H:%M") +'.csv','w') as fp:
+  with codecs.open('atores_dados '+(now.strftime("%d-%m-%y-%H:%M")) +'.csv','w', "utf-8") as fp:
     fp.write('Nome real da conta,Conta,Seguidores,Seguindo,Postagens\n')
     for url in urls:
       ator = ator_from_url(url)
       if ator:
-        s = str(ator.real)  +','+ator.nome +',' + str(ator.seg)+',' + str(ator.segn)+ ',' + str(ator.post)+'\n'
-        fp.write(str(ator.real)  +','+'https://www.instagram.com/'+ator.nome +',' + str(ator.seg)+ ','+str(ator.segn)+ ',' + str(ator.post)  +'\n')
+        fp.write(ator.real  +','+'https://www.instagram.com/'+(ator.nome) +'/,' + (str(ator.seg))+ ','+(str(ator.segn))+ ',' + (str(ator.post))  +'\n')
         valid_urls.append(url)
   with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
     for url in valid_urls:
       fp.write(url+'\n')
   if(not debug): # Nao remover se quiser debugar :)
-    os.system("rm *.html")  # Impedir que se use arquivo velho e apagar apohs o uso
-
+    try:
+      os.system("rm *.html")  # Impedir que se use arquivo velho e apagar apohs o uso
+    except:
+      pass
 
 # Nao faz sentido: melhor deixar pra debug
 # os.system("rm *.html")  # Impedir que se use arquivo velho e apagar apohs o uso
-main()
+if __name__ == '__main__':
+  main()
