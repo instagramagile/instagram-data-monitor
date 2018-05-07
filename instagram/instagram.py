@@ -41,10 +41,7 @@ class InstagramUser:
 		current_url = driver.current_url
 
 		print(current_url + '\n\n')
-<<<<<<< HEAD
-		print('\n\n')
-=======
->>>>>>> 2c1bdbb93bff3df1755a56e61d7ed02ecadb0d2c
+
 		access_token = re.match('.*#access_token=(.*)',current_url).group(1)
 
 		logging.debug('access_token retrieved: %s' % access_token)
@@ -53,7 +50,6 @@ class InstagramUser:
 		logging.debug('Retrieving %s\'s user id' % username)
 		response = requests.get('https://www.instagram.com/%s/?__a=1' % username)
 		user = response.json()
-<<<<<<< HEAD
 		# print("json resposta::")
 		# print(user)
 		# print("\n\n")
@@ -65,10 +61,7 @@ class InstagramUser:
 		# print('\n\ngraphql user id')		
 		# print(user['graphql']['user']['id'])
 		user_id = user['graphql']['user']['id']
-		
-=======
-		user_id = user['graphql']['user']['id']
->>>>>>> 2c1bdbb93bff3df1755a56e61d7ed02ecadb0d2c
+
 		logging.debug('%s\'s id is %s' % (username,user_id))
 		# Buscar o que interessa.
 		logging.debug('Retrieving %s\'s user data' % username)
