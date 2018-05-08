@@ -3,6 +3,7 @@ import wget
 import os
 import datetime
 import codecs
+from dict_gambs import utf8_to_utf8_right as fix_str
 now = datetime.datetime.now()
 class Ator(object):
   """docstring for Autor"""
@@ -64,7 +65,7 @@ def main(debug=False):
     for url in urls:
       ator = ator_from_url(url)
       if ator:
-        fp.write(ator.real  +','+'https://www.instagram.com/'+(ator.nome) +'/,' + (str(ator.seg))+ ','+(str(ator.segn))+ ',' + (str(ator.post))  +'\n')
+        fp.write(fix_str(ator.real)+','+'https://www.instagram.com/'+fix_str(ator.nome) +'/,' + str(ator.seg)+ ','+str(ator.segn)+ ',' + str(ator.post)  +'\n')
         valid_urls.append(url)
   with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
     for url in valid_urls:
