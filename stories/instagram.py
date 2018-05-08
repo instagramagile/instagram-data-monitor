@@ -212,6 +212,8 @@ class InstagramScraper(object):
                 ('story-image' in self.media_types or 'story-video' in self.media_types):
             # Get the user's stories.
             stories = self.fetch_stories(user['id'])
+            print(stories)
+            time.sleep(10000)
             # Downloads the user's stories and sends it to the executor.
             iter = tqdm.tqdm(stories, desc='{0} stories'.format(username), unit=" media")
             print(iter.total)

@@ -3,6 +3,7 @@ import wget
 import os
 import datetime
 import codecs
+from dict_gambs import utf8_to_utf8_right as fix_str
 now = datetime.datetime.now()
 class Ator(object):
   """docstring for Autor"""
@@ -40,8 +41,13 @@ def ator_from_url(url):
   except:
     with open('atores_removidos', 'a') as f:
       f.write(url+'\n')
-    return False
-  seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])
+      seguidores = 0
+      posts = 0
+      seguindo = 0
+      nomereal = ator
+    return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
+
+  seguidores = int(re.findall(r'edge_followed_by":\{"count":(\d+)',html)[0])  
   posts = int(re.findall(r'"edge_owner_to_timeline_media":\{"count":(\d+)',html)[0])
   seguindo = int(re.findall(r'"edge_follow":\{"count":(\d+)',html)[0])
   nomereal = re.findall(r'"full_name":"(.*?")',html)[0][:-1]
@@ -60,15 +66,22 @@ def main(debug=False):
     for i in fp:
       urls.append(i[:-1])  # Retira a quebra de linha
   with codecs.open('atores_dados '+(now.strftime("%d-%m-%y-%H:%M")) +'.csv','w', "utf-8") as fp:
-    fp.write('Nome real da conta,Conta,Seguidores,Seguindo,Postagens\n')
+    fp.write('Nome real da conta;Perfil;Numero de Seguidores;Seguindo;Postagens\n')
     for url in urls:
       ator = ator_from_url(url)
-      if ator:
-        fp.write(ator.real  +','+'https://www.instagram.com/'+(ator.nome) +'/,' + (str(ator.seg))+ ','+(str(ator.segn))+ ',' + (str(ator.post))  +'\n')
+      if ator.seg != 0:
+        fp.write(fix_str(ator.real)+';'+'https://www.instagram.com/'+fix_str(ator.nome) +'/;' + str(ator.seg)+ ';'+str(ator.segn)+ ';' + str(ator.post)  +'\n')
         valid_urls.append(url)
-  with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
-    for url in valid_urls:
-      fp.write(url+'\n')
+        print(fix_str(ator.real)+';'+'https://www.instagram.com/'+fix_str(ator.nome) +'/;' + str(ator.seg)+ ';'+str(ator.segn)+ ';' + str(ator.post)  +'\n')
+        
+      else:
+        fp.write(ator.real+';'+'/s' + ';' + '/s' + ';' +'/s'+ ';' + '/s'  +'\n')
+        valid_urls.append(url)
+        
+
+#  with open('atores_lista', 'w') as fp:  # Atualizar a lista mantendo APENAS os links validos
+#    for url in valid_urls:
+#      fp.write(url+'\n')
   if(not debug): # Nao remover se quiser debugar :)
     try:
       os.system("rm *.html")  # Impedir que se use arquivo velho e apagar apohs o uso
