@@ -111,4 +111,10 @@ instagram/instagram_personal.py
 tests_personal
 
 # termos de uso do instagram
-terms_instagram
+terms_instagram/
+
+# pasta de teste para rápida prototipação
+tmp/
+
+# antiga pasta usada para a api do instagram
+instagram/
