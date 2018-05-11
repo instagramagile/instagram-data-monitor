@@ -54,13 +54,13 @@ def ator_from_url(url):
     nomereal = re.findall(r'"full_name":"(.*?")', html)[0][:-1]
     return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
 
-def main(debug=False):
+def main(debug=False, path='/csv'):
     """ Monta a lista de urls usada para extrair as informcoes """
     try:
         os.system("rm *.html")
     except:
         pass
-
+    path = '.' + path + '/'
     urls = []
     valid_urls = []
 
@@ -68,7 +68,7 @@ def main(debug=False):
         for linha in arquivo_lista:
             urls.append(linha[:-1])  # Retira a quebra de linha
 
-    with codecs.open('atores_dados ' + (NOW.strftime("%d-%m-%y-%H:%M")) + '.csv', 'w',
+    with codecs.open(path + 'atores_dados ' + (NOW.strftime("%d-%m-%y-%H:%M")) + '.csv', 'w',
                      "utf-8") as arquivo_dados:
         arquivo_dados.write('Nome real da conta,Conta,Seguidores,Seguindo,Postagens\n')
 
