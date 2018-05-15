@@ -1,1 +1,1 @@
-web: python /gambs/valor1/valor.py
+web: python gambs/valor1/valor1.py
