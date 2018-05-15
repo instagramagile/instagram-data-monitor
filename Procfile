@@ -1,1 +1,1 @@
-web: python gambs/valor1/valor1.py
+web: gunicorn bot:valor1
