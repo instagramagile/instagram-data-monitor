@@ -1,1 +1,1 @@
-web: gunicorn bot:valor1
+web: gunicorn valor1:main
