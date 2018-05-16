@@ -193,7 +193,7 @@ class InstagramScraper(object):
 
         try:
 
-            arquivo = open('stories'+nome+'.csv', 'w')
+            arquivo = open('./stories/'+'stories'+nome+'.csv', 'w')
             arquivo.write('username'+','+'Data'+','+'stories'+'\n')
             arquivo.close()
             for username in self.usernames:
@@ -218,12 +218,11 @@ class InstagramScraper(object):
                 ('story-image' in self.media_types or 'story-video' in self.media_types):
             # Get the user's stories.
             stories = self.fetch_stories(user['id'])
-            # Downloads the user's stories and sends it to the executor.
             iter = tqdm.tqdm(stories, desc='{0} stories'.format(username), unit=" media")
             print(iter.total)
             agora = datetime.now()
 
-            arquivo = open('stories'+str(agora.day)+'-'+str(agora.month)+'-'+str(agora.year)+'.csv', 'a')
+            arquivo = open('./stories/'+'stories'+str(agora.day)+'-'+str(agora.month)+'-'+str(agora.year)+'.csv', 'a')
 
             arquivo.write(username+','+str(agora.day)+'/'+str(agora.month)+'/'+str(agora.year)+'-'+
             	str(agora.hour)+':'+str(agora.minute)+','+str(iter.total)+'\n')
