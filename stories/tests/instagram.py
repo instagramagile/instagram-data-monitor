@@ -183,7 +183,7 @@ class InstagramScraper(object):
         return 0
 
 
-    def scrape(self, folder ):
+    def scrape(self, folder, executor=concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_DOWNLOADS) ):
         """Crawls through and downloads user's media"""
         agora = datetime.now()
         nome = str(agora.day)+'-'+str(agora.month)+'-'+str(agora.year)
@@ -207,12 +207,12 @@ class InstagramScraper(object):
                 # Get the user metadata.
                 shared_data = self.get_shared_data(username)
                 user = self.deep_get(shared_data, 'entry_data.ProfilePage[0].graphql.user')
-                self.get_stories(dst, future_to_item, user, username)
+                self.get_stories(dst, executor, future_to_item, user, username)
         finally:
             self.quit = True
             self.logout()            
 
-    def get_stories(self, dst, future_to_item, user, username):
+    def get_stories(self, dst, executor, future_to_item, user, username):
         """Scrapes the user's stories."""
         if self.logged_in and \
                 ('story-image' in self.media_types or 'story-video' in self.media_types):
