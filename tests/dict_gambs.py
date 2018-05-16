@@ -1,0 +1,1 @@
+/home/maffei/Desktop/UNB_05_Semestre/es/projeto/instagram-data-monitor/gambs/valor1/dict_gambs.py

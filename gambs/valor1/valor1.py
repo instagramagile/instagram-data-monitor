@@ -1,5 +1,4 @@
 """ Arquivo principal do projeto """
-from __future__ import print_function
 import re
 import os
 import datetime
@@ -8,6 +7,7 @@ import wget
 from dict_gambs import utf8_to_utf8_right as fix_str
 
 NOW = datetime.datetime.now()
+
 
 class Ator(object):
     """ Seta os dados do ator """
