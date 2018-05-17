@@ -54,13 +54,17 @@ def ator_from_url(url):
     nomereal = re.findall(r'"full_name":"(.*?")', html)[0][:-1]
     return Ator(name=ator, pos=posts, segu=seguidores, segnd=seguindo, nr=nomereal)
 
-def main(debug=False, path='/csv'):
+def main(debug=False, folder='csv'):
     """ Monta a lista de urls usada para extrair as informcoes """
     try:
         os.system("rm *.html")
     except:
         pass
-    path = '.' + path + '/'
+
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    path = './' + folder + '/'
     urls = []
     valid_urls = []
 
